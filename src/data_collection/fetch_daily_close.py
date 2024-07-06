@@ -16,7 +16,7 @@ pairs = {
     'GBPCHF': 'GBPCHF=X'
 }
 
-data_dir = "data/raw/pair_data/max_daily/"
+data_dir = "../../data/raw/pair_data/max_daily/"
 
 def fetch_forex_data(symbol, start_date, end_date):
     print(f"Fetching data for {symbol} from {start_date} to {end_date}")
@@ -46,8 +46,7 @@ def update_csv(pair, symbol):
         current_date = datetime.now().date()
         print(f"Current date is {current_date}")
 
-        # Correct date comparison
-        if next_date.date() >= current_date:
+        if next_date.date() > current_date:
             print(f"No new data needed for {pair} as the next date is in the future.")
             return
         
@@ -56,9 +55,12 @@ def update_csv(pair, symbol):
         new_data = fetch_forex_data(symbol, next_date.strftime('%Y-%m-%d'), end_date)
         if new_data is not None and not new_data.empty:
             new_data = new_data[['Close']]
-            new_data.columns = [pair]
-            df = df.append(new_data)
-            df = df[~df.index.duplicated(keep='last')] 
+            new_data.index.name = 'Date'
+            new_data.columns = ['Close']
+            
+            df = pd.concat([df, new_data])
+            df = df[~df.index.duplicated(keep='last')]
+            
             print(f"Data to be saved for {pair}:\n{df.tail()}")
             df.to_csv(filename)
             print(f"Updated data for {pair}")
