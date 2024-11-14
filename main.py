@@ -8,9 +8,9 @@ def run_daily_capture(interval=1):
     ticker = "SPY"
     underlying_price = fetch_underlying_price(ticker)
     expiration_date = datetime.now().strftime("%Y-%m-%d")
-    strike_range = 5
-    market_open_time = datetime.now().replace(hour=6, minute=45, second=0, microsecond=0)
-    market_close_time = datetime.now().replace(hour=13, minute=15, second=0, microsecond=0)
+    strike_range = 10
+    market_open_time = datetime.now().replace(hour=6, minute=45, second=0, microsecond=0) #6:45am PST
+    market_close_time = datetime.now().replace(hour=13, minute=15, second=0, microsecond=0) #1:15pm PST
 
     while datetime.now() < market_close_time:
         if datetime.now() >= market_open_time:
@@ -18,7 +18,7 @@ def run_daily_capture(interval=1):
             print(f"{ticker} is currently trading at {underlying_price}")
             capture_snapshot(ticker, expiration_date, strike_range)
 
-            next_capture_in = interval * 60  
+            next_capture_in = interval * 60 #minutes 
             while next_capture_in > 0:
                 mins, secs = divmod(next_capture_in, 60)
                 timer = f"Next snapshot to DB in {mins:02}:{secs:02}"
