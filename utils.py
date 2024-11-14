@@ -120,5 +120,23 @@ def print_colored_pivot_df(df):
     combined_df['Call Open Interest'] = combined_df['Call Open Interest'].apply(lambda x: colored(x, 'green') if x == max_call_open_interest else x)
     combined_df['Put Open Interest'] = combined_df['Put Open Interest'].apply(lambda x: colored(x, 'red') if x == max_put_open_interest else x)
     
-    # Print the table
     print(tabulate(combined_df, headers='keys', tablefmt='fancy_grid'))
+    
+    
+def preprocess_snapshot_data(df):
+    """
+    Preprocesses snapshot data to aggregate call and put volumes.
+    Returns a DataFrame with timestamp, call volume, and put volume columns.
+    """
+    call_volumes = []
+    put_volumes = []
+    timestamps = df['timestamp']
+
+    for _, snapshot in df.iterrows():
+        calls = [opt['Volume'] for opt in snapshot['options_data'] if opt['Type'] == 'call']
+        puts = [opt['Volume'] for opt in snapshot['options_data'] if opt['Type'] == 'put']
+        
+        call_volumes.append(sum(calls))
+        put_volumes.append(sum(puts))
+
+    return pd.DataFrame({'timestamp': timestamps, 'call_volume': call_volumes, 'put_volume': put_volumes})

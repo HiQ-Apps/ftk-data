@@ -1,1 +1,56 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
 .env
+.env.*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Jupyter Notebook metadata
+*.ipynb
+
+# Config files
+*.DS_Store
+*.vscode/
+
+# Logs and local data
+*.log
+*.sqlite3
+*.pkl
+
+# IDE settings
+.idea/
+
+# PyInstaller
+# Usually contains build artifacts and executables
+/dist/
+/build/
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+*.coverage
+.cache
+.pytest_cache/
+
+# Sphinx documentation
+docs/_build/
+
+# pyenv
+.python-version
+
